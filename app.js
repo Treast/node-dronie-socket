@@ -13,7 +13,11 @@ io.on('connection', function(socket) {
     const json = packet[1] || null;
 
     if (event) {
-      socket.broadcast.emit(event, JSON.parse(json));
+      if (typeof json === 'object') {
+        socket.broadcast.emit(event, json);
+      } else {
+        socket.broadcast.emit(event, JSON.parse(json));
+      }
       next();
     }
 
